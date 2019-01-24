@@ -3,13 +3,16 @@ import android.arch.persistence.room.Entity;
 import android.arch.persistence.room.PrimaryKey;
 import android.support.annotation.NonNull;
 
-@Entity
-public class Pets {
-    @PrimaryKey
+@Entity(tableName = "pets")
+public class Pet {
+    @PrimaryKey(autoGenerate = true)
     @NonNull
     public int _id;
+    @NonNull
     public String name;
     public String breed;
+    @NonNull
     public int gender;
+    @NonNull
     public int weight;
 }
