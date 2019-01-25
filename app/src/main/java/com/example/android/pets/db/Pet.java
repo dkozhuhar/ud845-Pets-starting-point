@@ -15,4 +15,11 @@ public class Pet {
     public int gender;
     @NonNull
     public int weight;
+
+    public Pet(String name){
+        this.name = name;
+        this.breed = "lol";
+        this.gender = PetsDatabase.GENDER_UNKNOWN;
+        this.weight = 0;
+    }
 }

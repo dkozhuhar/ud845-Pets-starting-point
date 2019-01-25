@@ -15,10 +15,11 @@
  */
 package com.example.android.pets;
 
+import android.arch.lifecycle.Observer;
+import android.arch.lifecycle.ViewModelProviders;
 import android.content.Intent;
-import android.database.Cursor;
-import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
@@ -26,16 +27,22 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
 
+import com.example.android.pets.db.Pet;
+
+import java.util.List;
+
 /**
  * Displays list of pets that were entered and stored in the app.
  */
 public class CatalogActivity extends AppCompatActivity {
 
+    private PetViewModel petViewModel;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_catalog);
-
+        this.petViewModel = ViewModelProviders.of(this).get(PetViewModel.class);
+        displayDatabaseInfo();
         // Setup FAB to open EditorActivity
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
@@ -69,6 +76,22 @@ public class CatalogActivity extends AppCompatActivity {
                 return true;
         }
         return super.onOptionsItemSelected(item);
+    }
+    private void displayDatabaseInfo() {
+        try {
+
+            petViewModel.getAllPets().observe(this, new Observer<List<Pet>>() {
+                @Override
+                public void onChanged(@Nullable List<Pet> pets) {
+                    TextView displayView = findViewById(R.id.text_view_pet);
+                    displayView.setText("Number of rows in pets database table: " + pets.size());
+                }
+            });
+
+        }
+        finally {
+
+        }
     }
     /*
     private void displayDatabaseInfo() {
