@@ -77,8 +77,8 @@ public class CatalogActivity extends AppCompatActivity {
         }
         return super.onOptionsItemSelected(item);
     }
+    // Self developed method with use of Room
     private void displayDatabaseInfo() {
-        try {
 
             petViewModel.getAllPets().observe(this, new Observer<List<Pet>>() {
                 @Override
@@ -88,12 +88,8 @@ public class CatalogActivity extends AppCompatActivity {
                 }
             });
 
-        }
-        finally {
-
-        }
     }
-    /*
+    /* Udacity's method
     private void displayDatabaseInfo() {
         // To access our database, we instantiate our subclass of SQLiteOpenHelper
         // and pass the context, which is the current activity.

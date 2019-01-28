@@ -14,4 +14,7 @@ public interface PetDao {
 
     @Query("SELECT * FROM pets")
     LiveData<List<Pet>> getAllPets();
+
+    @Query("DELETE FROM pets")
+    void deleteAll();
 }

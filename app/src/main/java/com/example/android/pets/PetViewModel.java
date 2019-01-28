@@ -3,6 +3,7 @@ package com.example.android.pets;
 import android.app.Application;
 import android.arch.lifecycle.AndroidViewModel;
 import android.arch.lifecycle.LiveData;
+import android.util.Log;
 
 import com.example.android.pets.db.Pet;
 import com.example.android.pets.db.PetDao;
@@ -15,6 +16,7 @@ public class PetViewModel extends AndroidViewModel {
 
     private PetDao petDao;
     public LiveData<List<Pet>> getAllPets() {
+        Log.v("PetViewModel","getAllPets called");
         return allPets;
     }
 
