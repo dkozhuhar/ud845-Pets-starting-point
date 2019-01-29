@@ -16,10 +16,10 @@ public class Pet {
     @NonNull
     public int weight;
 
-    public Pet(String name){
+    public Pet(String name, String breed, int gender, int weight){
         this.name = name;
-        this.breed = "lol";
-        this.gender = PetsDatabase.GENDER_UNKNOWN;
-        this.weight = 0;
+        this.breed = breed;
+        this.gender = gender;
+        this.weight = weight;
     }
 }

@@ -28,6 +28,7 @@ import android.view.View;
 import android.widget.TextView;
 
 import com.example.android.pets.db.Pet;
+import com.example.android.pets.db.PetsDatabase;
 
 import java.util.List;
 
@@ -68,7 +69,7 @@ public class CatalogActivity extends AppCompatActivity {
         switch (item.getItemId()) {
             // Respond to a click on the "Insert dummy data" menu option
             case R.id.action_insert_dummy_data:
-                // Do nothing for now
+                petViewModel.insert(new Pet("Toto", "Terrier", PetsDatabase.GENDER_MALE, 7));
                 return true;
             // Respond to a click on the "Delete all entries" menu option
             case R.id.action_delete_all_entries:

@@ -49,7 +49,7 @@ public abstract class PetsDatabase extends RoomDatabase {
         @Override
         protected Void doInBackground(final Void... params) {
             Log.v("PetsDatabase","inserting a pet");
-            Pet pet = new Pet("1st");
+            Pet pet = new Pet("1st", "lol", GENDER_UNKNOWN, 0);
             mDao.insert(pet);
 
             return null;
