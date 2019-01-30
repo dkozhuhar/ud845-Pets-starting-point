@@ -15,6 +15,7 @@
  */
 package com.example.android.pets;
 
+import android.arch.lifecycle.ViewModelProviders;
 import android.os.Bundle;
 import android.support.v4.app.NavUtils;
 import android.support.v7.app.AppCompatActivity;
@@ -26,7 +27,9 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.Spinner;
+import android.widget.Toast;
 
+import com.example.android.pets.db.Pet;
 import com.example.android.pets.db.PetsDatabase;
 
 /**
@@ -34,6 +37,7 @@ import com.example.android.pets.db.PetsDatabase;
  */
 public class EditorActivity extends AppCompatActivity {
 
+    private PetViewModel petViewModel;
     /** EditText field to enter the pet's name */
     private EditText mNameEditText;
 
@@ -105,6 +109,16 @@ public class EditorActivity extends AppCompatActivity {
         });
     }
 
+    private void insertPet(){
+        this.petViewModel = ViewModelProviders.of(this).get(PetViewModel.class);
+
+        if (mWeightEditText.length() == 0) {
+            mWeightEditText.setText("0");
+        }
+        this.petViewModel.insert(new Pet(mNameEditText.getText().toString().trim(), mBreedEditText.getText().toString().trim(), mGender, Integer.parseInt(mWeightEditText.getText().toString().trim())));
+        Toast.makeText(this.getApplicationContext(), "Pet saved", Toast.LENGTH_LONG).show();
+
+    }
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu options from the res/menu/menu_editor.xml file.
@@ -119,7 +133,8 @@ public class EditorActivity extends AppCompatActivity {
         switch (item.getItemId()) {
             // Respond to a click on the "Save" menu option
             case R.id.action_save:
-                // Do nothing for now
+                insertPet();
+                finish();
                 return true;
             // Respond to a click on the "Delete" menu option
             case R.id.action_delete:
