@@ -10,7 +10,7 @@ import java.util.List;
 @Dao
 public interface PetDao {
     @Insert
-    void insert (Pet pet);
+    long insert (Pet pet);
 
     @Query("SELECT * FROM pets")
     LiveData<List<Pet>> getAllPets();

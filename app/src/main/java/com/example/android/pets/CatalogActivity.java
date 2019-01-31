@@ -85,7 +85,10 @@ public class CatalogActivity extends AppCompatActivity {
                 @Override
                 public void onChanged(@Nullable List<Pet> pets) {
                     TextView displayView = findViewById(R.id.text_view_pet);
-                    displayView.setText("Number of rows in pets database table: " + pets.size());
+                    displayView.setText("Number of rows in pets database table: " + pets.size() + "\n\n _id - name - breed - gender - weight\n");
+                    for (Pet currentPet : pets) {
+                        displayView.append(String.valueOf(currentPet._id ) + " - " + currentPet.name + " - " + currentPet.breed + " - " + currentPet.gender + " - " + currentPet.weight + "\n") ;
+                    }
                 }
             });
 

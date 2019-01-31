@@ -115,8 +115,9 @@ public class EditorActivity extends AppCompatActivity {
         if (mWeightEditText.length() == 0) {
             mWeightEditText.setText("0");
         }
-        this.petViewModel.insert(new Pet(mNameEditText.getText().toString().trim(), mBreedEditText.getText().toString().trim(), mGender, Integer.parseInt(mWeightEditText.getText().toString().trim())));
-        Toast.makeText(this.getApplicationContext(), "Pet saved", Toast.LENGTH_LONG).show();
+        Pet pet = new Pet(mNameEditText.getText().toString().trim(), mBreedEditText.getText().toString().trim(), mGender, Integer.parseInt(mWeightEditText.getText().toString().trim()));
+        this.petViewModel.insert(pet);
+        //Toast.makeText(this.getApplicationContext(), "Pet saved with id:" + this.petViewModel.lastInsertedPetId, Toast.LENGTH_LONG).show();
 
     }
     @Override
