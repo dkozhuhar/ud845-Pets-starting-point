@@ -4,6 +4,7 @@ import android.arch.lifecycle.LiveData;
 import android.arch.persistence.room.Dao;
 import android.arch.persistence.room.Insert;
 import android.arch.persistence.room.Query;
+import android.database.Cursor;
 
 import java.util.List;
 
@@ -15,6 +16,11 @@ public interface PetDao {
     @Query("SELECT * FROM pets")
     LiveData<List<Pet>> getAllPets();
 
+    @Query("SELECT * FROM pets")
+    Cursor getAllPetsCursor();
+
+
     @Query("DELETE FROM pets")
     void deleteAll();
+
 }
