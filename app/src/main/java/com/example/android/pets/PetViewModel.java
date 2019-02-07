@@ -4,6 +4,7 @@ import android.app.Application;
 import android.arch.lifecycle.AndroidViewModel;
 import android.arch.lifecycle.LiveData;
 import android.os.AsyncTask;
+import android.text.TextUtils;
 import android.util.Log;
 import android.widget.Toast;
 
@@ -30,18 +31,35 @@ public class PetViewModel extends AndroidViewModel {
     }
 
     public void insert (final Pet pet) {
+        if (validatePet(pet)) {
+            new AsyncTask<Void, Void, Long>() {
 
-        new AsyncTask<Void, Void, Long>() {
+                @Override
+                protected Long doInBackground(Void... voids) {
+                    return petDao.insert(pet);
+                }
 
-            @Override
-            protected Long doInBackground(Void... voids) {
-                return  petDao.insert(pet);
-            }
+                @Override
+                protected void onPostExecute(Long aLong) {
+                    Toast.makeText(getApplication(), "Pet saved with id:" + aLong, Toast.LENGTH_LONG).show();
+                }
+            }.execute();
+        }
+    }
+    //Sanity check
+    private boolean validatePet(Pet pet) {
+        if (TextUtils.isEmpty(pet.name)) {
+            throw new IllegalArgumentException("Pet requires a name");
+        }
+        if (pet.weight < 0) {
+            throw new IllegalArgumentException("Pet cannot have negative weight");
+        }
+        return true;
+    }
 
-            @Override
-            protected void onPostExecute(Long aLong) {
-                Toast.makeText(getApplication(), "Pet saved with id:" + aLong, Toast.LENGTH_LONG).show();
-            }
-        }.execute();
+    public void update (final Pet pet) {
+        if (validatePet(pet)) {
+            petDao.update(pet);
+        }
     }
 }
