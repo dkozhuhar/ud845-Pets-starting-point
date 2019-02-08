@@ -1,12 +1,13 @@
 package com.example.android.pets.db;
 
 import android.content.ContentProvider;
+import android.content.ContentResolver;
 import android.content.ContentUris;
 import android.content.ContentValues;
 import android.content.UriMatcher;
 import android.database.Cursor;
 import android.net.Uri;
-
+// This class is not used in application. I
 public class PetProvider extends ContentProvider {
     /** Tag for the log messages */
     public static final String LOG_TAG = PetProvider.class.getSimpleName();
@@ -18,6 +19,10 @@ public class PetProvider extends ContentProvider {
     public static final String PATH_PETS = "pets";
 
     public static final Uri CONTENT_URI = Uri.withAppendedPath(BASE_CONTENT_URI, PATH_PETS);
+
+    public static final String CONTENT_LIST_TYPE = ContentResolver.CURSOR_DIR_BASE_TYPE + "/" + CONTENT_AUTHORITY + "/" + PATH_PETS;
+
+    public static final String CONTENT_ITEM_TYPE = ContentResolver.CURSOR_ITEM_BASE_TYPE + "/" + CONTENT_AUTHORITY + "/" + PATH_PETS;
     /**
      * Initialize the provider and the database helper object.
      */
@@ -148,6 +153,15 @@ public class PetProvider extends ContentProvider {
      */
     @Override
     public String getType(Uri uri) {
-        return null;
+
+        final int match = sUriMatcher.match(uri);
+        switch (match) {
+            case PETS:
+                return CONTENT_LIST_TYPE;
+            case PET_ID:
+                return CONTENT_ITEM_TYPE;
+            default:
+                throw new IllegalStateException("Unknown URI " + uri + " with match " + match);
+        }
     }
 }
