@@ -22,6 +22,9 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.DividerItemDecoration;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -43,7 +46,20 @@ public class CatalogActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_catalog);
         this.petViewModel = ViewModelProviders.of(this).get(PetViewModel.class);
-        displayDatabaseInfo();
+
+        //displayDatabaseInfo();
+
+        petViewModel.getAllPets().observe(this, pets -> {
+            PetAdapter petAdapter = new PetAdapter(pets);
+            RecyclerView recyclerView = findViewById(R.id.list);
+            recyclerView.setHasFixedSize(true);
+            RecyclerView.LayoutManager layoutmanager = new LinearLayoutManager(this);
+            recyclerView.setLayoutManager(layoutmanager);
+            DividerItemDecoration itemDecor = new DividerItemDecoration(recyclerView.getContext(), ((LinearLayoutManager) layoutmanager).getOrientation());
+            recyclerView.addItemDecoration(itemDecor);
+            recyclerView.setAdapter(petAdapter);
+        });
+
         // Setup FAB to open EditorActivity
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
@@ -79,6 +95,7 @@ public class CatalogActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
     // Self developed method with use of Room
+    /*
     private void displayDatabaseInfo() {
 
             petViewModel.getAllPets().observe(this, new Observer<List<Pet>>() {
@@ -93,6 +110,7 @@ public class CatalogActivity extends AppCompatActivity {
             });
 
     }
+    */
     /* Udacity's method
     private void displayDatabaseInfo() {
         // To access our database, we instantiate our subclass of SQLiteOpenHelper
