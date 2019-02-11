@@ -50,14 +50,23 @@ public class CatalogActivity extends AppCompatActivity {
         //displayDatabaseInfo();
 
         petViewModel.getAllPets().observe(this, pets -> {
-            PetAdapter petAdapter = new PetAdapter(pets);
             RecyclerView recyclerView = findViewById(R.id.list);
-            recyclerView.setHasFixedSize(true);
-            RecyclerView.LayoutManager layoutmanager = new LinearLayoutManager(this);
-            recyclerView.setLayoutManager(layoutmanager);
-            DividerItemDecoration itemDecor = new DividerItemDecoration(recyclerView.getContext(), ((LinearLayoutManager) layoutmanager).getOrientation());
-            recyclerView.addItemDecoration(itemDecor);
-            recyclerView.setAdapter(petAdapter);
+            View emptyView = findViewById(R.id.empty_view);
+            if (pets.size() == 0) {
+                recyclerView.setVisibility(View.GONE);
+                emptyView.setVisibility(View.VISIBLE);
+            } else {
+                recyclerView.setVisibility(View.VISIBLE);
+                emptyView.setVisibility(View.GONE);
+                PetAdapter petAdapter = new PetAdapter(pets);
+
+                recyclerView.setHasFixedSize(true);
+                RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(this);
+                recyclerView.setLayoutManager(layoutManager);
+                DividerItemDecoration itemDecor = new DividerItemDecoration(recyclerView.getContext(), ((LinearLayoutManager) layoutManager).getOrientation());
+                recyclerView.addItemDecoration(itemDecor);
+                recyclerView.setAdapter(petAdapter);
+            }
         });
 
         // Setup FAB to open EditorActivity
