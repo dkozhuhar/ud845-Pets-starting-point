@@ -1,9 +1,12 @@
 package com.example.android.pets;
 
 import android.content.Context;
+import android.content.Intent;
+import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
+import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -37,6 +40,14 @@ public class PetAdapter extends RecyclerView.Adapter<PetAdapter.MyViewHolder> {
         petName.setText(current.name);
         TextView petBreed = holder.listItemView.findViewById(R.id.summary);
         petBreed.setText(current.breed);
+        holder.listItemView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(view.getContext(), EditorActivity.class);
+                intent.putExtra("parcel_data", current);
+                view.getContext().startActivity(intent);
+            }
+        });
     }
 
     @Override

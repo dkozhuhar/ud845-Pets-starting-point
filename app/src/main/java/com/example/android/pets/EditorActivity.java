@@ -60,14 +60,22 @@ public class EditorActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_editor);
-
         // Find all relevant views that we will need to read user input from
         mNameEditText = (EditText) findViewById(R.id.edit_pet_name);
         mBreedEditText = (EditText) findViewById(R.id.edit_pet_breed);
         mWeightEditText = (EditText) findViewById(R.id.edit_pet_weight);
         mGenderSpinner = (Spinner) findViewById(R.id.spinner_gender);
-
         setupSpinner();
+
+        Pet pet = getIntent().getParcelableExtra("parcel_data");
+        if (pet != null) {
+            setTitle(R.string.editor_activity_title_edit_pet);
+            mBreedEditText.setText(pet.breed);
+            mNameEditText.setText(pet.name);
+            mWeightEditText.setText(String.valueOf(pet.weight));
+            mGenderSpinner.setSelection(pet.gender);
+        }
+
     }
 
     /**
