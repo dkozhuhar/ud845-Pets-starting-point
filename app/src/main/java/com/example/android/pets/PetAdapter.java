@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -39,7 +40,11 @@ public class PetAdapter extends RecyclerView.Adapter<PetAdapter.MyViewHolder> {
         TextView petName = holder.listItemView.findViewById(R.id.name);
         petName.setText(current.name);
         TextView petBreed = holder.listItemView.findViewById(R.id.summary);
-        petBreed.setText(current.breed);
+        if (TextUtils.isEmpty(current.breed)) {
+            petBreed.setText(R.string.unknown_breed);
+        } else {
+            petBreed.setText(current.breed);
+        }
         holder.listItemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

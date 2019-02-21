@@ -18,8 +18,9 @@ public class PetViewModel extends AndroidViewModel {
     private LiveData<List<Pet>> allPets;
     public long lastInsertedPetId = 0;
     private PetDao petDao;
+
     public LiveData<List<Pet>> getAllPets() {
-        Log.v("PetViewModel","getAllPets called");
+        Log.v("PetViewModel", "getAllPets called");
         return allPets;
     }
 
@@ -30,7 +31,7 @@ public class PetViewModel extends AndroidViewModel {
         allPets = petDao.getAllPets();
     }
 
-    public void insert (final Pet pet) {
+    public void insert(final Pet pet) {
         if (validatePet(pet)) {
             new AsyncTask<Void, Void, Long>() {
 
@@ -46,8 +47,12 @@ public class PetViewModel extends AndroidViewModel {
             }.execute();
         }
     }
+
     //Sanity check
     private boolean validatePet(Pet pet) {
+        if (TextUtils.isEmpty(pet.name) && TextUtils.isEmpty(pet.breed) && pet.gender == PetsDatabase.GENDER_UNKNOWN && pet.weight == 0) {
+            return false;
+        }
         if (TextUtils.isEmpty(pet.name)) {
             throw new IllegalArgumentException("Pet requires a name");
         }
@@ -57,9 +62,53 @@ public class PetViewModel extends AndroidViewModel {
         return true;
     }
 
-    public void update (final Pet pet) {
+    public void update(final Pet pet) {
         if (validatePet(pet)) {
-            petDao.update(pet);
+            new AsyncTask<Void, Void, Integer>() {
+
+                @Override
+                protected Integer doInBackground(Void... voids) {
+                    return petDao.update(pet);
+                }
+
+                @Override
+                protected void onPostExecute(Integer aLong) {
+                    Toast.makeText(getApplication(), "Pet saved with id:" + aLong, Toast.LENGTH_LONG).show();
+                }
+            }.execute();
         }
+    }
+
+    public void deletePet(Pet pet) {
+        new AsyncTask<Void, Void, Void>() {
+
+            @Override
+            protected Void doInBackground(Void... voids) {
+                petDao.delete(pet);
+                return null;
+            }
+
+            @Override
+            protected void onPostExecute(Void aLong) {
+                Toast.makeText(getApplication(), "Pet deleted", Toast.LENGTH_LONG).show();
+            }
+        }.execute();
+
+    }
+
+    public void deleteAll(){
+        new AsyncTask<Void, Void, Void>() {
+
+            @Override
+            protected Void doInBackground(Void... voids) {
+                petDao.deleteAll();
+                return null;
+            }
+
+            @Override
+            protected void onPostExecute(Void aLong) {
+                Toast.makeText(getApplication(), "All pets are deleted", Toast.LENGTH_LONG).show();
+            }
+        }.execute();
     }
 }
